@@ -1,0 +1,22 @@
+class CreateAlephbetTables < ActiveRecord::Migration<%= migration_version %>
+  def change
+    create_table "alephbet_tracking" do |t|
+      t.string :uuid, :null => false
+      t.string :experiment, :null => false
+      t.string :namespace, :null => false, :default => "alephbet"
+      t.timestamps
+    end
+
+    create_table "alephbet_experiments" do |t|
+      t.string :experiment, :null => false
+      t.string :variant, :null => false
+      t.string :event, :null => false
+      t.string :namespace, :null => false, :default => "alephbet"
+      t.integer :counter, :null => false, :default => 0
+      t.timestamps
+    end
+
+    add_index :alephbet_tracking, :uuid, :unique => true
+    add_index :alephbet_experiments, [:namespace, :experiment, :variant, :event], :unique => true, :name => "by_experiments"
+  end
+end
