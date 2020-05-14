@@ -4,7 +4,6 @@ module Alephbet
 
     # acts a browser-friendly API endpoint
     skip_before_action :verify_authenticity_token
-    before_action :cors_headers
     before_action :check_api_key, :except => :cors_preflight_check
 
     def experiments
@@ -81,13 +80,6 @@ module Alephbet
 
     def permitted_params
       params.permit(PARAMS)
-    end
-
-    def cors_headers
-      response.headers["Access-Control-Allow-Origin"] = Alephbet.cors_allow_origin
-      response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
-      response.headers["Access-Control-Allow-Headers"] = Alephbet.cors_allow_headers
-      response.headers["Access-Control-Max-Age"] = "1728000"
     end
   end
 end
